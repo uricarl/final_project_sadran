@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>סדרן עבודה</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #16a34a;
+            --danger: #dc2626;
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --text: #1f2933;
+            --muted: #6b7280;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Arial", "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #e0e7ff, #f1f5f9);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: white;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        header .title {
+            font-weight: bold;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        header button {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        header button:hover {
+            opacity: 0.9;
+        }
+
+        /* ===== MAIN ===== */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card {
+            background: var(--card);
+            width: 100%;
+            max-width: 520px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 28px;
+        }
+
+        .card h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 6px;
+        }
+
+        .card h2 {
+            text-align: center;
+            font-weight: normal;
+            color: var(--muted);
+            font-size: 16px;
+            margin-bottom: 28px;
+        }
+
+        /* ===== FORM ===== */
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px dashed #c7d2fe;
+            border-radius: 10px;
+            background: #eef2ff;
+            cursor: pointer;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .actions button,
+        .actions a {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .run {
+            background: var(--secondary);
+            color: white;
+            border: none;
+        }
+
+        .download {
+            background: var(--primary);
+            color: white;
+        }
+
+        .run:hover,
+        .download:hover {
+            opacity: 0.9;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            header {
+                padding: 10px 14px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="title">בס"ד</div>
+    <button onclick="location.reload()">התנתק</button>
+</header>
+
+<main>
+    <div class="card">
+        <h1>ברוך הבא לסדרן העבודה</h1>
+        <h2>שם הארגון</h2>
+
+        <form action="/run-scheduling"
+              method="post"
+              enctype="multipart/form-data">
+            
+            <div class="field">
+                <label for="work_date">בחר תאריך:</label>
+                <input type="date" id="work_date" name="work_date" required>
+            </div>
+
+            <div class="field">
+                <label>קובץ משימות (CSV)</label>
+                <input type="file" name="tasks_file" required>
+            </div>
+
+            <div class="field">
+                <label>קובץ עובדים (CSV)</label>
+                <input type="file" name="employees_file" required>
+            </div>
+
+            <div class="actions">
+                <button type="submit" class="run">הפעל שיבוץ</button>
+                <a href="/download-result" class="download">הורדת קובץ</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>
