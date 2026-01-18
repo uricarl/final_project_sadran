@@ -1,28 +1,24 @@
-from fastapi import FastAPI, UploadFile, Form, File
+from fastapi import APIRouter, UploadFile, Form, File
 from fastapi.responses import HTMLResponse, FileResponse
 from datetime import date
 import shutil
 import os
+from config import UPLOAD_DIR, RESULT_DIR
 from scheduler_engine.scheduler import sadran
+from controllers.api_controller import router #מייבא את הנתב שאחראי על האיפיאי בקונטרולר
 
-app = FastAPI()
 
-UPLOAD_DIR = "api_server/db/uploads"
-RESULT_DIR = "api_server/db/assigned_shifts"
-
-os.makedirs(UPLOAD_DIR, exist_ok=True)
-os.makedirs(RESULT_DIR, exist_ok=True)
+router = APIRouter()
 
 last_generated_file: str | None = None
 
-
-@app.get("/", response_class=HTMLResponse)
+@router.get("/", response_class=HTMLResponse)
 def index():
     with open("api_server/ui/index.html", encoding="utf-8") as f:
         return f.read()
 
 
-@app.post("/run-scheduling", response_class=HTMLResponse)
+@router.post("/run-scheduling", response_class=HTMLResponse)
 async def run_scheduling(
     tasks_file: UploadFile = File(...),
     employees_file: UploadFile = File(...),
@@ -71,7 +67,7 @@ async def run_scheduling(
         """
 
 
-@app.get("/download-result")
+@router.get("/download-result")
 def download_result():
     if last_generated_file and os.path.exists(last_generated_file):
         return FileResponse(
@@ -81,7 +77,3 @@ def download_result():
         )
 
     return HTMLResponse("לא נוצר קובץ או שהקובץ נמחק מהשרת")
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000)
